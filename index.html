@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>متجر سريع</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #111827;
+      padding: 15px 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #334155;
+    }
+    .brand { font-size: 24px; font-weight: bold; }
+    .nav {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn.secondary { background: #475569; }
+    .btn.danger { background: #dc2626; }
+    .btn.success { background: #16a34a; }
+    .btn.warning { background: #f59e0b; color: black; }
+
+    .auth-box, .panel {
+      background: #111827;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #475569;
+      border-radius: 10px;
+      background: #0f172a;
+      color: white;
+      font-size: 16px;
+    }
+    .switch {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .switch button {
+      flex: 1;
+      padding: 10px 12px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #1f2937;
+      color: white;
+      font-weight: bold;
+    }
+    .switch button.active {
+      background: #2563eb;
+    }
+    .hidden { display: none; }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .stat {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+    }
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    .user-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+    .inline-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-left: 10px;
+    }
+    .status-active { background: #166534; color: #dcfce7; }
+    .status-suspended { background: #854d0e; color: #fef3c7; }
+    .status-deleted { background: #7f1d1d; color: #fee2e2; }
+    .message-box {
+      margin-top: 15px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #1f2937;
+      border: 1px solid #475569;
+    }
+    .alert {
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-top: 12px;
+      display: none;
+    }
+    .alert.show { display: block; }
+    .alert.error { background: rgba(220,38,38,0.15); border: 1px solid #ef4444; color: #fecaca; }
+    .alert.success { background: rgba(34,197,94,0.15); border: 1px solid #22c55e; color: #bbf7d0; }
+    .alert.info { background: rgba(59,130,246,0.15); border: 1px solid #3b82f6; color: #bfdbfe; }
+    .reward-box {
+      margin-top: 18px;
+      background: #0b1220;
+      border: 1px solid #374151;
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .maintenance {
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,0.94);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+    .maintenance.show { display: flex; }
+    .maintenance-box {
+      background: #111827;
+      border: 1px solid #475569;
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+    }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">متجرنا</div>
+      <div class="nav" id="nav"></div>
+    </div>
+
+    <div id="app"></div>
+  </div>
+
+  <div id="maintenanceModal" class="maintenance">
+    <div class="maintenance-box">
+      <h2>الموقع تحت الصيانة</h2>
+      <p>تم إيقاف الموقع من الإدارة مؤقتًا، يرجى المحاولة لاحقًا.</p>
+      <button class="btn" onclick="closeMaintenance()">إغلاق</button>
+    </div>
+  </div>
+
+  <script>
+    // ==========================
+    // STORAGE
+    // ==========================
+    const STORAGE_KEYS = {
+      users: "store_users_demo",
+      currentUser: "store_current_user_demo",
+      settings: "store_settings_demo",
+      logs: "store_logs_demo"
+    };
+
+    const defaultProducts = [
+      { code: "P100", rewardText: "اشتراك مجاني", rewardUrl: "https://example.com/free" },
+      { code: "P200", rewardText: "رابط المنتج 1", rewardUrl: "https://example.com/product1" },
+      { code: "P300", rewardText: "رابط المنتج 2", rewardUrl: "https://example.com/product2" },
+      { code: "P400", rewardText: "رابط المنتج 3", rewardUrl: "https://example.com/product3" }
+    ];
+
+    function randomBetween(min, max, decimals = 2) {
+      const value = Math.random() * (max - min) + min;
+      return Number(value.toFixed(decimals));
+    }
+
+    function getUsers() {
+      const raw = localStorage.getItem(STORAGE_KEYS.users);
+      if (!raw) {
+        const users = [
+          { id: 1, username: "admin", password: "admin123", role: "admin", status: "active", points: 0, createdAt: new Date().toISOString(), claims: [], message: "مرحبا الإدارة", inviteCode: "ADMIN123" },
+          { id: 2, username: "demo", password: "demo123", role: "user", status: "active", points: 0, createdAt: new Date().toISOString(), claims: [], message: "", inviteCode: "" }
+        ];
+        localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(users));
+        return users;
+      }
+      return JSON.parse(raw);
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(users));
+    }
+
+    function getCurrentUser() {
+      const raw = localStorage.getItem(STORAGE_KEYS.currentUser);
+      return raw ? JSON.parse(raw) : null;
+    }
+
+    function setCurrentUser(user) {
+      if (!user) {
+        localStorage.removeItem(STORAGE_KEYS.currentUser);
+      } else {
+        localStorage.setItem(STORAGE_KEYS.currentUser, JSON.stringify(user));
+      }
+    }
+
+    function getSettings() {
+      const raw = localStorage.getItem(STORAGE_KEYS.settings);
+      if (!raw) {
+        const settings = {
+          maintenance: false,
+          visitorCount: 0,
+          totalClaims: 0,
+          totalUsers: 0
+        };
+        localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings));
+        return settings;
+      }
+      return JSON.parse(raw);
+    }
+
+    function saveSettings(settings) {
+      localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings));
+    }
+
+    function getLogs() {
+      const raw = localStorage.getItem(STORAGE_KEYS.logs);
+      return raw ? JSON.parse(raw) : [];
+    }
+
+    function saveLogs(logs) {
+      localStorage.setItem(STORAGE_KEYS.logs, JSON.stringify(logs));
+    }
+
+    function addLog(text) {
+      const logs = getLogs();
+      logs.unshift({
+        text,
+        time: new Date().toLocaleString("ar-SA")
+      });
+      saveLogs(logs.slice(0, 100));
+    }
+
+    function showMessage(containerId, text, type = "info") {
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      el.className = "alert show " + type;
+      el.innerText = text;
+    }
+
+    function renderNav() {
+      const nav = document.getElementById("nav");
+      const user = getCurrentUser();
+      if (!user) {
+        nav.innerHTML = `<button class="btn" onclick="renderAuth()">تسجيل الدخول</button>`;
+        return;
+      }
+      nav.innerHTML = `
+        <span>مرحبًا ${user.username}</span>
+        <button class="btn secondary" onclick="renderDashboard()">الصفحة الرئيسية</button>
+        ${user.role === "admin" ? `<button class="btn warning" onclick="renderAdmin()">لوحة الإدارة</button>` : ""}
+        <button class="btn danger" onclick="logout()">تسجيل الخروج</button>
+      `;
+    }
+
+    function renderAuth() {
+      const app = document.getElementById("app");
+      const settings = getSettings();
+
+      if (settings.maintenance && getCurrentUser()?.role !== "admin") {
+        renderMaintenanceOverlay();
+        return;
+      }
+
+      app.innerHTML = `
+        <div class="grid">
+          <div class="auth-box">
+            <h2>تسجيل الدخول</h2>
+            <div id="loginAlert" class="alert"></div>
+            <div class="form-group">
+              <label>اسم المستخدم</label>
+              <input id="loginUsername" type="text" placeholder="اسم المستخدم" />
+            </div>
+            <div class="form-group">
+              <label>كلمة المرور</label>
+              <input id="loginPassword" type="password" placeholder="كلمة المرور" />
+            </div>
+            <button class="btn" onclick="login()">دخول</button>
+          </div>
+
+          <div class="auth-box">
+            <h2>إنشاء حساب</h2>
+            <div id="registerAlert" class="alert"></div>
+            <div class="form-group">
+              <label>اسم المستخدم</label>
+              <input id="regUsername" type="text" placeholder="اسم المستخدم" />
+            </div>
+            <div class="form-group">
+              <label>كلمة المرور</label>
+              <input id="regPassword" type="password" placeholder="كلمة المرور" />
+            </div>
+            <div class="form-group">
+              <label>تأكيد كلمة المرور</label>
+              <input id="regConfirm" type="password" placeholder="تأكيد كلمة المرور" />
+            </div>
+            <div class="form-group">
+              <label>كود التصريح</label>
+              <input id="regInvite" type="text" placeholder="اكتب كود التصريح إن وجد" />
+            </div>
+            <button class="btn success" onclick="register()">إنشاء الحساب</button>
+          </div>
+        </div>
+      `;
+      renderNav();
+    }
+
+    function login() {
+      const username = document.getElementById("loginUsername").value.trim();
+      const password = document.getElementById("loginPassword").value;
+
+      const users = getUsers();
+      const user = users.find(u => u.username === username && u.password === password);
+
+      if (!user) {
+        showMessage("loginAlert", "اسم المستخدم أو كلمة المرور غير صحيحة", "error");
+        return;
+      }
+
+      if (user.status === "suspended") {
+        showMessage("loginAlert", "حسابك تم إيقافه من الإدارة", "error");
+        return;
+      }
+
+      if (user.status === "deleted") {
+        showMessage("loginAlert", "هذا الحساب تم حذفه", "error");
+        return;
+      }
+
+      const settings = getSettings();
+      if (settings.maintenance && user.role !== "admin") {
+        renderMaintenanceOverlay();
+        return;
+      }
+
+      setCurrentUser(user);
+      addLog(`${user.username} قام بتسجيل الدخول`);
+      renderDashboard();
+    }
+
+    function register() {
+      const username = document.getElementById("regUsername").value.trim();
+      const password = document.getElementById("regPassword").value;
+      const confirm = document.getElementById("regConfirm").value;
+      const invite = document.getElementById("regInvite").value.trim();
+
+      if (!username || !password || !confirm) {
+        showMessage("registerAlert", "يرجى تعبئة جميع الحقول", "error");
+        return;
+      }
+
+      if (password !== confirm) {
+        showMessage("registerAlert", "كلمة المرور وتأكيدها غير متطابقين", "error");
+        return;
+      }
+
+      const users = getUsers();
+      if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+        showMessage("registerAlert", "اسم المستخدم موجود بالفعل", "error");
+        return;
+      }
+
+      // كود تصريح اختياري
+      const adminSecret = "ADMIN123";
+      const role = invite === adminSecret ? "admin" : "user";
+
+      const newUser = {
+        id: Date.now(),
+        username,
+        password,
+        role,
+        status: "active",
+        points: 0,
+        createdAt: new Date().toISOString(),
+        claims: [],
+        message: "",
+        inviteCode: invite || ""
+      };
+
+      users.push(newUser);
+      saveUsers(users);
+
+      setCurrentUser(newUser);
+      addLog(`${username} قام بإنشاء حساب جديد`);
+      renderDashboard();
+    }
+
+    function logout() {
+      setCurrentUser(null);
+      renderAuth();
+    }
+
+    function renderDashboard() {
+      const user = getCurrentUser();
+      const app = document.getElementById("app");
+
+      if (!user) {
+        renderAuth();
+        return;
+      }
+
+      const settings = getSettings();
+      if (settings.maintenance && user.role !== "admin") {
+        renderMaintenanceOverlay();
+        return;
+      }
+
+      const productOptions = defaultProducts.map(p => `<option value="${p.code}">${p.code}</option>`).join("");
+
+      app.innerHTML = `
+        <div class="panel">
+          <h2>لوحة المستخدم</h2>
+          <p>مرحبًا: <strong>${user.username}</strong></p>
+          <p>عدد نقاطك: <strong>${Number(user.points || 0).toFixed(2)}</strong></p>
+
+          <div class="grid">
+            <div>
+              <div class="form-group">
+                <label>رقم الفاتورة</label>
+                <input id="invoiceNumber" type="text" placeholder="مثال: 1001" />
+              </div>
+              <div class="form-group">
+                <label>كود المنتج</label>
+                <select id="productCode">
+                  <option value="">اختر المنتج</option>
+                  ${productOptions}
+                </select>
+              </div>
+              <button class="btn success" onclick="claimProduct()">تأكيد</button>
+            </div>
+
+            <div class="reward-box">
+              <h3>معلومات المنتج</h3>
+              <div id="productInfo">
+                اختر كود المنتج لمعرفة Reward/Text
+              </div>
+            </div>
+          </div>
+
+          <div id="claimAlert" class="alert"></div>
+          <div class="message-box">
+            <strong>رسالة الإدارة:</strong>
+            <div>${user.message || "لا توجد رسالة حالياً."}</div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("productCode").addEventListener("change", function () {
+        const code = this.value;
+        const product = defaultProducts.find(p => p.code === code);
+        const info = document.getElementById("productInfo");
+        if (!product) {
+          info.innerHTML = "اختر كود المنتج";
+          return;
+        }
+        info.innerHTML = `
+          <p>اسم المنتج: <strong>${product.rewardText}</strong></p>
+          <p>رابط المنتج: <a href="${product.rewardUrl}" target="_blank" style="color:#60a5fa;">${product.rewardUrl}</a></p>
+        `;
+      });
+
+      renderNav();
+    }
+
+    function claimProduct() {
+      const user = getCurrentUser();
+      if (!user) return;
+
+      const invoiceNumber = document.getElementById("invoiceNumber").value.trim();
+      const productCode = document.getElementById("productCode").value.trim();
+
+      if (!invoiceNumber || !productCode) {
+        showMessage("claimAlert", "يرجى إدخال رقم الفاتورة واختيار المنتج", "error");
+        return;
+      }
+
+      const users = getUsers();
+      const currentUserIndex = users.findIndex(u => u.id === user.id);
+      if (currentUserIndex < 0) {
+        showMessage("claimAlert", "المستخدم غير موجود", "error");
+        return;
+      }
+
+      const product = defaultProducts.find(p => p.code === productCode);
+      if (!product) {
+        showMessage("claimAlert", "هذا المنتج غير موجود", "error");
+        return;
+      }
+
+      const existingUser = users[currentUserIndex];
+      const alreadyUsed = existingUser.claims.some(c => c.invoiceNumber === invoiceNumber && c.productCode === productCode);
+
+      if (alreadyUsed) {
+        showMessage("claimAlert", "تم استخدام هذه الفاتورة من قبل، ولا يمكن تكرارها", "error");
+        return;
+      }
+
+      const settings = getSettings();
+      settings.totalClaims += 1;
+      saveSettings(settings);
+
+      const rewardPoints = randomBetween(0.1, 2.5, 2);
+      existingUser.points = Number((Number(existingUser.points || 0) + rewardPoints).toFixed(2));
+      existingUser.claims.push({
+        invoiceNumber,
+        productCode,
+        rewardText: product.rewardText,
+        rewardUrl: product.rewardUrl,
+        points: rewardPoints,
+        time: new Date().toISOString()
+      });
+
+      users[currentUserIndex] = existingUser;
+      saveUsers(users);
+
+      const updatedUser = { ...existingUser };
+      setCurrentUser(updatedUser);
+
+      addLog(`${existingUser.username} استخدم الفاتورة ${invoiceNumber} وحقق ${rewardPoints} نقطة`);
+
+      showMessage("claimAlert", `تم التحقق بنجاح! تم إضافة ${rewardPoints} نقطة وتقديم: ${product.rewardText}`, "success");
+
+      const infoBox = document.getElementById("productInfo");
+      infoBox.innerHTML = `
+        <p>تم التحقق بنجاح.</p>
+        <p>النقاط المضافة: <strong>${rewardPoints}</strong></p>
+        <p>النص: <strong>${product.rewardText}</strong></p>
+        <p>الرابط: <a href="${product.rewardUrl}" target="_blank" style="color:#60a5fa;">${product.rewardUrl}</a></p>
+      `;
+    }
+
+    function renderAdmin() {
+      const user = getCurrentUser();
+      if (!user || user.role !== "admin") {
+        renderAuth();
+        return;
+      }
+
+      const settings = getSettings();
+      const users = getUsers();
+
+      const userCards = users.map(u => {
+        const status = u.status === "active" ? "active" : u.status === "suspended" ? "suspended" : "deleted";
+        return `
+          <div class="user-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong>${u.username}</strong>
+                <span class="status-badge status-${status}">
+                  ${u.status}
+                </span>
+              </div>
+              <div>النقاط: <strong>${Number(u.points || 0).toFixed(2)}</strong></div>
+            </div>
+            <p>اسم المستخدم: ${u.username}</p>
+            <p>كلمة المرور: ${u.password}</p>
+            <p>الدور: ${u.role}</p>
+            <p>رسالة: ${u.message || "لا توجد رسالة"}</p>
+
+            <div class="inline-actions">
+              <button class="btn secondary" onclick="toggleUserStatus(${u.id})">${u.status === "suspended" ? "تفعيل" : "إيقاف"}</button>
+              <button class="btn warning" onclick="givePoints(${u.id})">إعطاء نقاط</button>
+              <button class="btn success" onclick="setUserMessage(${u.id})">رسالة</button>
+              <button class="btn danger" onclick="deleteUser(${u.id})">حذف</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      const app = document.getElementById("app");
+      app.innerHTML = `
+        <div class="panel">
+          <h2>لوحة الإدارة</h2>
+          <div class="stat-grid">
+            <div class="stat"><strong>${users.filter(u => u.status === "active").length}</strong> مستخدمين نشطين</div>
+            <div class="stat"><strong>${users.length}</strong> إجمالي الحسابات</div>
+            <div class="stat"><strong>${settings.totalClaims}</strong> عدد الطلبات</div>
+            <div class="stat"><strong>${settings.maintenance ? "موقف" : "مفتوح"}</strong> حالة الموقع</div>
+          </div>
+
+          <div class="inline-actions" style="margin-bottom: 20px;">
+            <button class="btn" onclick="toggleMaintenance()">تبديل حالة الموقع</button>
+            <button class="btn secondary" onclick="renderDashboard()">عودة للوحة المستخدم</button>
+          </div>
+
+          <div>${userCards}</div>
+        </div>
+      `;
+
+      renderNav();
+    }
+
+    function toggleMaintenance() {
+      const settings = getSettings();
+      settings.maintenance = !settings.maintenance;
+      saveSettings(settings);
+      if (settings.maintenance) {
+        renderMaintenanceOverlay();
+      } else {
+        closeMaintenance();
+      }
+      renderAdmin();
+      addLog(`الإدارة غيرت حالة الموقع إلى ${settings.maintenance ? "موقفة" : "مفعلة"}`);
+    }
+
+    function renderMaintenanceOverlay() {
+      const modal = document.getElementById("maintenanceModal");
+      if (modal) modal.classList.add("show");
+    }
+
+    function closeMaintenance() {
+      const modal = document.getElementById("maintenanceModal");
+      if (modal) modal.classList.remove("show");
+    }
+
+    function toggleUserStatus(id) {
+      const users = getUsers();
+      const index = users.findIndex(u => u.id === id);
+      if (index < 0) return;
+
+      users[index].status = users[index].status === "suspended" ? "active" : "suspended";
+      saveUsers(users);
+      renderAdmin();
+      addLog(`تم تعديل حالة المستخدم ${users[index].username}`);
+    }
+
+    function givePoints(id) {
+      const value = Number(prompt("أدخل عدد النقاط التي تريد إضافتها:", "0.1"));
+      if (isNaN(value) || value <= 0) return;
+
+      const users = getUsers();
+      const index = users.findIndex(u => u.id === id);
+      if (index < 0) return;
+
+      users[index].points = Number((Number(users[index].points || 0) + value).toFixed(2));
+      users[index].message = `تمت إضافة ${value} نقطة من الإدارة`;
+      saveUsers(users);
+
+      addLog(`تمت إضافة ${value} نقطة إلى ${users[index].username}`);
+      renderAdmin();
+    }
+
+    function setUserMessage(id) {
+      const msg = prompt("اكتب رسالة الإدارة لهذا المستخدم:");
+      if (msg === null) return;
+
+      const users = getUsers();
+      const index = users.findIndex(u => u.id === id);
+      if (index < 0) return;
+
+      users[index].message = msg;
+      saveUsers(users);
+      addLog(`تم إرسال رسالة إلى ${users[index].username}`);
+      renderAdmin();
+    }
+
+    function deleteUser(id) {
+      const confirmDelete = confirm("هل أنت متأكد من حذف هذا الحساب؟");
+      if (!confirmDelete) return;
+
+      const users = getUsers().filter(u => u.id !== id);
+      saveUsers(users);
+      const current = getCurrentUser();
+      if (current && current.id === id) {
+        setCurrentUser(null);
+        renderAuth();
+      } else {
+        renderAdmin();
+      }
+      addLog(`تم حذف مستخدم برقم ${id}`);
+    }
+
+    function init() {
+      const settings = getSettings();
+      const current = getCurrentUser();
+
+      if (!current) {
+        renderAuth();
+      } else {
+        if (settings.maintenance && current.role !== "admin") {
+          renderMaintenanceOverlay();
+        } else {
+          renderDashboard();
+        }
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
