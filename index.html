@@ -1,92 +1,317 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DATE Portal</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #121a2b;
+        --panel-2: #1a2438;
+        --line: #2b3a52;
+        --text: #e5edf8;
+        --muted: #9db0ca;
+        --primary: #3b82f6;
+        --primary-2: #60a5fa;
+        --success: #22c55e;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+      }
 
-<script>
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Arial, Tahoma, sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 24px 18px 60px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding: 18px 20px;
+        border-radius: 16px;
+        background: rgba(18, 26, 43, 0.95);
+        border: 1px solid var(--line);
+        margin-bottom: 20px;
+      }
+
+      .brand {
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 10px;
+        padding: 10px 16px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 15px;
+        transition: 0.2s ease;
+        color: white;
+        background: var(--primary);
+      }
+
+      .btn:hover { filter: brightness(1.05); }
+      .btn.secondary { background: #334155; }
+      .btn.success { background: var(--success); }
+      .btn.warning { background: var(--warning); color: #111827; }
+      .btn.danger { background: var(--danger); }
+
+      .panel, .auth-box {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 22px;
+        box-shadow: 0 16px 36px rgba(0,0,0,0.18);
+      }
+
+      .auth-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      .label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      input, select {
+        width: 100%;
+        background: #0f172a;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        color: var(--text);
+        padding: 12px 14px;
+        font-size: 15px;
+      }
+
+      input:focus, select:focus {
+        outline: 2px solid rgba(59,130,246,0.35);
+        border-color: var(--primary-2);
+      }
+
+      .alert {
+        display: none;
+        margin-top: 12px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-size: 14px;
+      }
+
+      .alert.show { display: block; }
+      .alert.error {
+        background: rgba(239,68,68,0.12);
+        border: 1px solid rgba(239,68,68,0.5);
+        color: #fecaca;
+      }
+      .alert.success {
+        background: rgba(34,197,94,0.12);
+        border: 1px solid rgba(34,197,94,0.5);
+        color: #bbf7d0;
+      }
+      .alert.info {
+        background: rgba(59,130,246,0.12);
+        border: 1px solid rgba(59,130,246,0.5);
+        color: #bfdbfe;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      .stat {
+        background: var(--panel-2);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 18px 14px;
+        text-align: center;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 2rem;
+        margin-bottom: 8px;
+      }
+
+      .card-list {
+        display: grid;
+        gap: 14px;
+      }
+
+      .user-card {
+        background: #0f172a;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px;
+      }
+
+      .status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-right: 8px;
+      }
+
+      .status.active { background: rgba(34,197,94,0.15); color: #bbf7d0; }
+      .status.suspended { background: rgba(245,158,11,0.15); color: #fcd34d; }
+      .status.deleted { background: rgba(239,68,68,0.15); color: #fecaca; }
+
+      .inline-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .muted { color: var(--muted); }
+      .message-box {
+        margin-top: 16px;
+        background: #0f172a;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+      }
+
+      .product-box {
+        background: #0f172a;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 18px;
+      }
+
+      .maintenance {
+        position: fixed;
+        inset: 0;
+        background: rgba(2,6,23,0.9);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 999;
+      }
+
+      .maintenance.show { display: flex; }
+      .maintenance-box {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 30px 24px;
+        max-width: 480px;
+        width: 100%;
+        text-align: center;
+      }
+
+      @media (max-width: 820px) {
+        .auth-grid { grid-template-columns: 1fr; }
+        .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="topbar">
+        <div class="brand">DATE Portal</div>
+        <div id="nav" class="nav"></div>
+      </header>
+
+      <main id="app"></main>
+    </div>
+
+    <div id="maintenanceModal" class="maintenance">
+      <div class="maintenance-box">
+        <h2>الموقع تحت الصيانة</h2>
+        <p class="muted">تم إيقاف الموقع مؤقتًا من الإدارة، يرجى المحاولة لاحقًا.</p>
+        <button class="btn" onclick="closeMaintenance()">إغلاق</button>
+      </div>
+    </div>
+
+    <script>
       const STORAGE_KEY = 'date_portal_state_v1';
-      const ADMIN_SECRET_KEY = 'DATE_ADMIN_SECRET';
-      const DEFAULT_ADMIN_SECRET = 'DATE-4IG84N';
+      const CURRENT_USER_KEY = 'date_portal_current_user';
+      const ADMIN_SECRET = 'DATE-4IG84N';
 
       const defaultProducts = [
-        {
-          id: 'prod-1',
-          name: 'اشتراك احترافي',
-          code: 'P-100',
-          description: 'منتج احترافي مع بيانات الوصول المخصصة.',
-          available: true,
-          detailText: 'محتوى المنتج المخصص: بيانات الوصول خلال 24 ساعة.',
-          link: 'https://example.com/product/p-100'
-        },
-        {
-          id: 'prod-2',
-          name: 'حزمة VIP',
-          code: 'P-200',
-          description: 'حزمة VIP مع بيانات مميزة وتحديثات خاصة.',
-          available: true,
-          detailText: 'تتضمن الحزمة VIP الوصول السريع إلى كل المحتوى.',
-          link: 'https://example.com/product/p-200'
-        },
-        {
-          id: 'prod-3',
-          name: 'تجربة مختارة',
-          code: 'P-300',
-          description: 'نسخة تجريبية مختارة مع تفاصيل التسليم.',
-          available: false,
-          detailText: 'غير متاح حاليًا، سيتم تفعيله من الإدارة.',
-          link: 'https://example.com/product/p-300'
-        }
+        { id: 'prod-1', name: 'اشتراك احترافي', code: 'P-100', description: 'منتج احترافي مع بيانات الوصول المخصصة.', available: true, detailText: 'محتوى المنتج المخصص: بيانات الوصول خلال 24 ساعة.', link: 'https://example.com/product/p-100' },
+        { id: 'prod-2', name: 'حزمة VIP', code: 'P-200', description: 'حزمة VIP مع بيانات مميزة وتحديثات خاصة.', available: true, detailText: 'تتضمن الحزمة VIP الوصول السريع إلى كل المحتوى.', link: 'https://example.com/product/p-200' },
+        { id: 'prod-3', name: 'تجربة مختارة', code: 'P-300', description: 'نسخة تجريبية مختارة مع تفاصيل التسليم.', available: false, detailText: 'غير متاح حاليًا، سيتم تفعيله من الإدارة.', link: 'https://example.com/product/p-300' }
       ];
 
-      function uid(prefix) {
-        return `${prefix}-${Math.random().toString(36).slice(2, 10)}-${Date.now().toString(36)}`;
-      }
-
-      function makeCustomerCode() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let code = 'DATE-';
-        for (let i = 0; i < 6; i++) {
-          code += chars[Math.floor(Math.random() * chars.length)];
-        }
-        return code;
-      }
-
-      function deepClone(value) {
-        return JSON.parse(JSON.stringify(value));
-      }
-
-      function getDefaultState() {
-        return {
-          users: [],
-          products: deepClone(defaultProducts),
-          invoices: [],
-          announcements: [],
-          auditLogs: [],
-          settings: { maintenance: false },
-          adminSecret: DEFAULT_ADMIN_SECRET,
-        };
-      }
+      function clone(value) { return JSON.parse(JSON.stringify(value)); }
 
       function getState() {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) {
-          const state = getDefaultState();
+          const state = {
+            users: [
+              { id: 1, username: 'admin', password: 'admin123', role: 'admin', status: 'active', points: 0, message: 'مرحبا الإدارة', claims: [] },
+              { id: 2, username: 'demo', password: 'demo123', role: 'user', status: 'active', points: 0, message: '', claims: [] }
+            ],
+            products: clone(defaultProducts),
+            invoices: [],
+            announcements: [],
+            auditLogs: [],
+            settings: { maintenance: false }
+          };
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
           return state;
         }
 
         try {
-          const parsed = JSON.parse(raw);
-          const base = getDefaultState();
-          return {
-            ...base,
-            ...parsed,
-            users: Array.isArray(parsed.users) ? parsed.users : [],
-            products: Array.isArray(parsed.products) && parsed.products.length ? parsed.products : base.products,
-            invoices: Array.isArray(parsed.invoices) ? parsed.invoices : [],
-            announcements: Array.isArray(parsed.announcements) ? parsed.announcements : [],
-            auditLogs: Array.isArray(parsed.auditLogs) ? parsed.auditLogs : [],
-            settings: parsed.settings || base.settings,
-            adminSecret: parsed.adminSecret || base.adminSecret,
+          const state = JSON.parse(raw);
+          state.users = Array.isArray(state.users) ? state.users : [];
+          state.products = Array.isArray(state.products) && state.products.length ? state.products : clone(defaultProducts);
+          state.invoices = Array.isArray(state.invoices) ? state.invoices : [];
+          state.announcements = Array.isArray(state.announcements) ? state.announcements : [];
+          state.auditLogs = Array.isArray(state.auditLogs) ? state.auditLogs : [];
+          state.settings = state.settings || { maintenance: false };
+          return state;
+        } catch (e) {
+          const state = {
+            users: [
+              { id: 1, username: 'admin', password: 'admin123', role: 'admin', status: 'active', points: 0, message: 'مرحبا الإدارة', claims: [] },
+              { id: 2, username: 'demo', password: 'demo123', role: 'user', status: 'active', points: 0, message: '', claims: [] }
+            ],
+            products: clone(defaultProducts),
+            invoices: [],
+            announcements: [],
+            auditLogs: [],
+            settings: { maintenance: false }
           };
-        } catch (err) {
-          const state = getDefaultState();
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
           return state;
         }
@@ -97,1151 +322,425 @@
       }
 
       function getCurrentUser() {
-        const current = localStorage.getItem('date_portal_current_user');
-        if (!current) return null;
-        try {
-          return JSON.parse(current);
-        } catch {
-          localStorage.removeItem('date_portal_current_user');
-          return null;
-        }
+        const raw = localStorage.getItem(CURRENT_USER_KEY);
+        return raw ? JSON.parse(raw) : null;
       }
 
       function setCurrentUser(user) {
-        if (!user) {
-          localStorage.removeItem('date_portal_current_user');
-          return;
-        }
-        localStorage.setItem('date_portal_current_user', JSON.stringify(user));
-      }
-
-      function formatDate(dateString) {
-        if (!dateString) return '—';
-        const date = new Date(dateString);
-        return isNaN(date.getTime()) ? '—' : date.toLocaleString('ar-SA');
-      }
-
-      function escapeHtml(value) {
-        return String(value ?? '').replace(/[&<>"']/g, function (char) {
-          return {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-          }[char];
-        });
+        if (!user) localStorage.removeItem(CURRENT_USER_KEY);
+        else localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
       }
 
       function renderNav() {
-        const nav = document.getElementById('navActions');
+        const nav = document.getElementById('nav');
         const user = getCurrentUser();
 
         if (!user) {
-          nav.innerHTML = '<button class="btn" type="button" onclick="renderAuthScreen()">تسجيل الدخول</button>';
+          nav.innerHTML = '<button class="btn" onclick="renderAuth()">تسجيل الدخول</button>';
           return;
         }
 
-        const adminBtn = user.role === 'admin' ? '<button class="btn secondary" type="button" onclick="renderAdminPanel()">لوحة الإدارة</button>' : '';
         nav.innerHTML = `
-          <span class="muted">مرحبًا ${escapeHtml(user.username)}</span>
-          <button class="btn secondary" type="button" onclick="renderCustomerDashboard()">لوحة العميل</button>
-          ${adminBtn}
-          <button class="btn danger" type="button" onclick="logoutUser()">تسجيل الخروج</button>
+          <span class="muted">مرحبا ${user.username}</span>
+          <button class="btn secondary" onclick="renderDashboard()">الرئيسية</button>
+          ${user.role === 'admin' ? '<button class="btn warning" onclick="renderAdmin()">لوحة الإدارة</button>' : ''}
+          <button class="btn danger" onclick="logout()">تسجيل الخروج</button>
         `;
       }
 
-      function showAlert(id, text, type = 'info') {
-        const node = document.getElementById(id);
-        if (!node) return;
-        node.className = `alert show ${type}`;
-        node.textContent = text;
+      function showMessage(elementId, text, type) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        el.className = 'alert show ' + type;
+        el.textContent = text;
       }
 
-      function renderAuthScreen() {
+      function renderAuth() {
         const app = document.getElementById('app');
         const state = getState();
 
+        if (state.settings.maintenance && (!getCurrentUser() || getCurrentUser().role !== 'admin')) {
+          renderMaintenanceOverlay();
+          return;
+        }
+
         app.innerHTML = `
-          <section class="hero">
-            <div class="hero-box"><span>.D</span></div>
-            <h1>مرحبًا بك في DATE</h1>
-            <p class="hero-sub">سجّل دخولك للوصول إلى طلباتك واستلام فواتيرك.</p>
-          </section>
-
           <section class="auth-grid">
-            <div class="panel">
-              <div class="panel-header">
-                <h2>تسجيل الدخول</h2>
-                <span class="mini-tag">DATE PORTAL</span>
+            <div class="auth-box">
+              <h2>تسجيل الدخول</h2>
+              <div id="loginAlert" class="alert"></div>
+              <div class="form-group">
+                <label class="label">اسم المستخدم</label>
+                <input id="loginUsername" type="text" placeholder="اسم المستخدم" />
               </div>
-
-              <div id="loginAlert" class="alert" aria-live="polite"></div>
-
-              <div class="field">
-                <label for="loginUsername">اسم المستخدم</label>
-                <input id="loginUsername" type="text" placeholder="أدخل اسم المستخدم" />
+              <div class="form-group">
+                <label class="label">كلمة المرور</label>
+                <input id="loginPassword" type="password" placeholder="كلمة المرور" />
               </div>
-
-              <div class="field">
-                <label for="loginPassword">كلمة المرور</label>
-                <div class="password-wrap">
-                  <input id="loginPassword" type="password" placeholder="أدخل كلمة المرور" />
-                  <button class="toggle-visibility" type="button" data-target="loginPassword" aria-label="إظهار كلمة المرور">👁</button>
-                </div>
-              </div>
-
-              <div class="field">
-                <div class="switch-row">
-                  <button id="adminCodeToggle" class="simple-link" type="button">لديك تصريح؟</button>
-                </div>
-                <div id="adminCodeArea" class="admin-toggle-area">
-                  <label for="adminCode">التصريح</label>
-                  <input id="adminCode" type="password" placeholder="مثال: DATE-4IG84N" />
-                </div>
-              </div>
-
-              <div class="auth-actions">
-                <button class="btn" type="button" onclick="loginUser()">تسجيل الدخول</button>
-                <div class="subtle-link">
-                  <span>ليس لديك حساب؟</span>
-                  <button type="button" onclick="showRegisterForm()">أنشئ حسابًا</button>
-                </div>
-              </div>
+              <button class="btn" onclick="login()">دخول</button>
             </div>
 
-            <div class="panel" id="registerPanel">
-              <div class="panel-header">
-                <h2>إنشاء حساب</h2>
-                <span class="mini-tag">جديد</span>
+            <div class="auth-box">
+              <h2>إنشاء حساب</h2>
+              <div id="registerAlert" class="alert"></div>
+              <div class="form-group">
+                <label class="label">اسم المستخدم</label>
+                <input id="regUsername" type="text" placeholder="اسم المستخدم" />
               </div>
-
-              <div id="registerAlert" class="alert" aria-live="polite"></div>
-
-              <div class="field">
-                <label for="registerUsername">اسم المستخدم</label>
-                <input id="registerUsername" type="text" placeholder="اختر اسم مستخدم" />
+              <div class="form-group">
+                <label class="label">كلمة المرور</label>
+                <input id="regPassword" type="password" placeholder="كلمة المرور" />
               </div>
-
-              <div class="field">
-                <label for="registerPassword">كلمة المرور</label>
-                <div class="password-wrap">
-                  <input id="registerPassword" type="password" placeholder="اختر كلمة مرور" />
-                  <button class="toggle-visibility" type="button" data-target="registerPassword" aria-label="إظهار كلمة المرور">👁</button>
-                </div>
+              <div class="form-group">
+                <label class="label">تأكيد كلمة المرور</label>
+                <input id="regConfirm" type="password" placeholder="تأكيد كلمة المرور" />
               </div>
-
-              <div class="field">
-                <label for="registerConfirm">تأكيد كلمة المرور</label>
-                <div class="password-wrap">
-                  <input id="registerConfirm" type="password" placeholder="كرر كلمة المرور" />
-                  <button class="toggle-visibility" type="button" data-target="registerConfirm" aria-label="إظهار كلمة المرور">👁</button>
-                </div>
+              <div class="form-group">
+                <label class="label">كود الإدارة (اختياري)</label>
+                <input id="regInvite" type="text" placeholder="اكتب كود الإدارة إن وجد" />
               </div>
-
-              <div class="auth-actions">
-                <button class="btn success" type="button" onclick="registerUser()">إنشاء الحساب</button>
-              </div>
+              <button class="btn success" onclick="register()">إنشاء الحساب</button>
             </div>
           </section>
         `;
 
-        const adminToggle = document.getElementById('adminCodeToggle');
-        adminToggle.addEventListener('click', function () {
-          const node = document.getElementById('adminCodeArea');
-          node.classList.toggle('show');
-        });
-
-        document.querySelectorAll('.toggle-visibility').forEach((button) => {
-          button.addEventListener('click', function () {
-            const target = document.getElementById(this.dataset.target);
-            if (!target) return;
-            const type = target.type === 'password' ? 'text' : 'password';
-            target.type = type;
-            this.textContent = type === 'password' ? '👁' : '🙈';
-          });
-        });
-
-        attachGlobalShortcuts();
         renderNav();
       }
 
-      function showRegisterForm() {
-        const panel = document.getElementById('registerPanel');
-        if (panel) {
-          panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }
-
-      function loginUser() {
+      function login() {
         const username = document.getElementById('loginUsername').value.trim();
         const password = document.getElementById('loginPassword').value;
-        const adminCode = document.getElementById('adminCode') ? document.getElementById('adminCode').value.trim() : '';
-
-        if (!username || !password) {
-          showAlert('loginAlert', 'يرجى إدخال اسم المستخدم وكلمة المرور.', 'error');
-          return;
-        }
-
         const state = getState();
-        const user = state.users.find((item) => item.username.toLowerCase() === username.toLowerCase());
+        const user = state.users.find(u => u.username === username && u.password === password);
 
         if (!user) {
-          showAlert('loginAlert', 'اسم المستخدم أو كلمة المرور غير صحيحة.', 'error');
+          showMessage('loginAlert', 'اسم المستخدم أو كلمة المرور غير صحيحة', 'error');
           return;
         }
 
-        if (user.password !== password) {
-          showAlert('loginAlert', 'اسم المستخدم أو كلمة المرور غير صحيحة.', 'error');
+        if (user.status === 'suspended') {
+          showMessage('loginAlert', 'حسابك تم إيقافه من الإدارة', 'error');
           return;
         }
 
-        if (user.status !== 'active') {
-          showAlert('loginAlert', 'الحساب غير نشط أو تم إيقافه.', 'error');
+        if (user.status === 'deleted') {
+          showMessage('loginAlert', 'هذا الحساب تم حذفه', 'error');
           return;
         }
 
-        const adminSecret = state.adminSecret || DEFAULT_ADMIN_SECRET;
-        const isAdminCodeValid = !!adminCode && adminCode === adminSecret;
-        const isAlreadyAdmin = user.role === 'admin';
-
-        if (!!adminCode && !isAdminCodeValid) {
-          showAlert('loginAlert', 'التصريح غير صحيح.', 'error');
+        if (state.settings.maintenance && user.role !== 'admin') {
+          renderMaintenanceOverlay();
           return;
         }
 
-        if (isAdminCodeValid || isAlreadyAdmin) {
-          user.role = 'admin';
-          user.adminAuthorizedAt = new Date().toISOString();
-          state.auditLogs.unshift({
-            id: uid('audit'),
-            actor: user.username,
-            action: 'تسجيل دخول إداري',
-            details: `تسجيل دخول ناجح عبر التصريح`,
-            createdAt: new Date().toISOString()
-          });
-          saveState(state);
-          setCurrentUser({ ...user });
-          renderAdminPanel();
-          return;
-        }
-
-        setCurrentUser({ ...user });
-        renderCustomerDashboard();
+        setCurrentUser(user);
+        renderDashboard();
       }
 
-      function registerUser() {
-        const username = document.getElementById('registerUsername').value.trim();
-        const password = document.getElementById('registerPassword').value;
-        const confirm = document.getElementById('registerConfirm').value;
+      function register() {
+        const username = document.getElementById('regUsername').value.trim();
+        const password = document.getElementById('regPassword').value;
+        const confirm = document.getElementById('regConfirm').value;
+        const invite = document.getElementById('regInvite').value.trim();
 
         if (!username || !password || !confirm) {
-          showAlert('registerAlert', 'يرجى تعبئة جميع الحقول.', 'error');
-          return;
-        }
-
-        if (password.length < 6) {
-          showAlert('registerAlert', 'يجب أن تكون كلمة المرور 6 أحرف أو أكثر.', 'error');
+          showMessage('registerAlert', 'يرجى تعبئة جميع الحقول', 'error');
           return;
         }
 
         if (password !== confirm) {
-          showAlert('registerAlert', 'كلمة المرور وتأكيدها غير متطابقين.', 'error');
+          showMessage('registerAlert', 'كلمة المرور وتأكيدها غير متطابقين', 'error');
           return;
         }
 
         const state = getState();
-        const exists = state.users.some((u) => u.username.toLowerCase() === username.toLowerCase());
-        if (exists) {
-          showAlert('registerAlert', 'اسم المستخدم موجود بالفعل.', 'error');
+        if (state.users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+          showMessage('registerAlert', 'اسم المستخدم موجود بالفعل', 'error');
           return;
         }
 
-        const newUser = {
-          id: uid('user'),
+        const role = invite === ADMIN_SECRET ? 'admin' : 'user';
+        state.users.push({
+          id: Date.now(),
           username,
           password,
-          role: 'user',
+          role,
           status: 'active',
-          customerCode: makeCustomerCode(),
           points: 0,
-          createdAt: new Date().toISOString(),
           message: '',
-          pointsLog: [{
-            id: uid('point-log'),
-            amount: 0,
-            reason: 'تسجيل حساب جديد',
-            type: 'earned',
-            actor: 'system',
-            createdAt: new Date().toISOString()
-          }],
           claims: []
-        };
+        });
 
-        state.users.push(newUser);
         saveState(state);
-
-        setCurrentUser({ ...newUser });
-        showAlert('registerAlert', 'تم إنشاء الحساب بنجاح.', 'success');
-        renderCustomerDashboard();
+        setCurrentUser(state.users[state.users.length - 1]);
+        renderDashboard();
       }
 
-      function logoutUser() {
+      function logout() {
         setCurrentUser(null);
-        renderAuthScreen();
+        renderAuth();
       }
 
-      function renderCustomerDashboard() {
+      function renderDashboard() {
         const user = getCurrentUser();
+        const state = getState();
+
         if (!user) {
-          renderAuthScreen();
+          renderAuth();
           return;
         }
 
-        const state = getState();
-        const settings = state.settings || { maintenance: false };
-
-        if (settings.maintenance && user.role !== 'admin') {
+        if (state.settings.maintenance && user.role !== 'admin') {
           renderMaintenanceOverlay();
           return;
         }
 
-        const userData = state.users.find((item) => item.id === user.id) || user;
-        const recentClaims = (userData.claims || []).slice().reverse().slice(0, 5);
-        const pointsTotal = Number(userData.points || 0);
-        const userInvoices = state.invoices.filter((invoice) => {
-          const matchesCustomer = invoice.customerId === userData.customerCode || invoice.customerName === userData.username;
-          return matchesCustomer;
-        });
+        const productOptions = state.products.map(p => `<option value="${p.code}">${p.code}</option>`).join('');
 
-        const productCards = userInvoices.length
-          ? userInvoices.map((invoice) => {
-              const statusLabel = invoice.status === 'claimed' ? 'تم الاستلام' : invoice.status === 'ready' ? 'جاهز للاستلام' : invoice.status === 'cancelled' ? 'ملغى' : invoice.status === 'pending' ? 'قيد التجهيز' : 'غير معروف';
-              const badgeClass = invoice.status === 'claimed' ? 'success' : invoice.status === 'ready' ? 'info' : invoice.status === 'cancelled' ? 'danger' : 'warn';
-              return `
-                <div class="list-item">
-                  <div class="info-row">
-                    <strong>${escapeHtml(invoice.productName || 'منتج')}</strong>
-                    <span class="badge ${badgeClass}">${statusLabel}</span>
-                  </div>
-                  <div class="compact">رقم الفاتورة: ${escapeHtml(invoice.invoiceNumber)}</div>
-                  <div class="compact">كود الاستلام: ${escapeHtml(invoice.code || '—')}</div>
-                  <div class="compact">الحالة: ${escapeHtml(invoice.status || 'pending')}</div>
-                  <div class="compact">تاريخ الإنشاء: ${formatDate(invoice.createdAt)}</div>
+        document.getElementById('app').innerHTML = `
+          <section class="panel">
+            <h2>لوحة المستخدم</h2>
+            <p>مرحبًا: <strong>${user.username}</strong></p>
+            <p>عدد نقاطك: <strong>${Number(user.points || 0).toFixed(2)}</strong></p>
+
+            <div class="auth-grid">
+              <div>
+                <div class="form-group">
+                  <label class="label">رقم الفاتورة</label>
+                  <input id="invoiceNumber" type="text" placeholder="مثال: 1001" />
                 </div>
-              `;
-            }).join('')
-          : '<div class="compact">لا توجد منتجات مرتبطة بهذا الحساب. عند تجهيز طلب جديد سيظهر هنا.</div>';
-
-        const app = document.getElementById('app');
-        app.innerHTML = `
-          <section class="dashboard">
-            <div class="dashboard-header">
-              <h2>لوحة العميل</h2>
-              <span class="mini-tag">${escapeHtml(userData.username)}</span>
-            </div>
-
-            <div class="stats-grid">
-              <div class="stat-card">
-                <span class="stat-label">نقاط الولاء</span>
-                <div class="stat-value">${pointsTotal} نقطة</div>
+                <div class="form-group">
+                  <label class="label">كود المنتج</label>
+                  <select id="productCode">
+                    <option value="">اختر المنتج</option>
+                    ${productOptions}
+                  </select>
+                </div>
+                <button class="btn success" onclick="claimProduct()">تأكيد</button>
               </div>
-              <div class="stat-card">
-                <span class="stat-label">طلباتك</span>
-                <div class="stat-value">${userInvoices.length}</div>
-              </div>
-              <div class="stat-card">
-                <span class="stat-label">حالة الحساب</span>
-                <div class="stat-value">${userData.status === 'active' ? 'نشط' : 'غير نشط'}</div>
+
+              <div class="product-box">
+                <h3>معلومات المنتج</h3>
+                <div id="productInfo">اختر كود المنتج لمعرفة التفاصيل.</div>
               </div>
             </div>
 
-            <div class="two-col">
-              <div class="card-list">
-                <div class="info-card">
-                  <h3>بيانات الحساب</h3>
-                  <div class="info-row">
-                    <span class="muted">اسم المستخدم</span>
-                    <strong>${escapeHtml(userData.username)}</strong>
-                  </div>
-                  <div class="info-row">
-                    <span class="muted">نوع الحساب</span>
-                    <strong>${userData.role === 'admin' ? 'إدارة' : 'عميل'}</strong>
-                  </div>
-                  <div class="info-row">
-                    <span class="muted">تاريخ الانضمام</span>
-                    <strong>${formatDate(userData.createdAt)}</strong>
-                  </div>
-                  <div class="account-code-box">
-                    <span class="muted">كود حسابك</span>
-                    <span class="code-text" id="customerCodeValue">${escapeHtml(userData.customerCode || '—')}</span>
-                    <button class="btn small-btn" type="button" onclick="copyCustomerCode()">نسخ الكود</button>
-                  </div>
-                </div>
-
-                <div class="info-card claim-box">
-                  <h3>استلام طلبك</h3>
-                  <p class="muted">أدخل رقم الفاتورة أو كود الاستلام الذي حصلت عليه من الإدارة.</p>
-                  <div class="field">
-                    <label for="invoiceLookup">رقم الفاتورة أو كود المنتج</label>
-                    <input id="invoiceLookup" type="text" placeholder="مثال: DATE-192 أو P-100" />
-                  </div>
-                  <button class="btn" type="button" onclick="claimInvoiceFromCustomer()">تأكيد واستلام المنتج</button>
-                  <div id="customerClaimAlert" class="alert" style="margin-top:16px;"></div>
-                </div>
-              </div>
-
-              <div class="card-list">
-                <div class="info-card">
-                  <h3>المنتجات المرتبطة</h3>
-                  <div id="productListContainer" class="stack">${productCards}</div>
-                </div>
-
-                <div class="info-card">
-                  <h3>سجل النقاط</h3>
-                  <div id="pointsLogContainer" class="stack">${(userData.pointsLog || []).slice().reverse().slice(0, 8).map((entry) => `
-                    <div class="list-item">
-                      <div class="info-row">
-                        <strong>${entry.amount > 0 ? '+' : ''}${entry.amount} نقطة</strong>
-                        <span class="badge ${entry.amount > 0 ? 'success' : 'danger'}">${entry.amount > 0 ? 'مكتسبة' : 'مخصومة'}</span>
-                      </div>
-                      <div class="compact">السبب: ${escapeHtml(entry.reason || 'غير محدد')}</div>
-                      <div class="compact">التاريخ: ${formatDate(entry.createdAt)}</div>
-                      <div class="compact">المسؤول: ${escapeHtml(entry.actor || 'النظام')}</div>
-                    </div>
-                  `).join('') || '<div class="compact">لا توجد عمليات نقاط حتى الآن.</div>'}</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="info-card" style="margin-top:22px;">
-              <h3>الإشعارات</h3>
-              <div id="dashboardAnnouncementList" class="stack">${(state.announcements.filter((item) => !item.userId || item.userId === userData.id)).length ? state.announcements.filter((item) => !item.userId || item.userId === userData.id).map((item) => `
-                <div class="list-item">
-                  <div class="info-row">
-                    <strong>${item.scope === 'all' ? 'إشعار عام' : 'إشعار خاص'}</strong>
-                    <span class="badge ${item.scope === 'all' ? 'info' : 'warn'}">${item.scope === 'all' ? 'عام' : 'خاص'}</span>
-                  </div>
-                  <div>${escapeHtml(item.message)}</div>
-                  <div class="compact">${formatDate(item.createdAt)}</div>
-                </div>
-              `).join('') : '<div class="compact">لا توجد رسائل إدارة حاليًا.</div>'}</div>
+            <div id="claimAlert" class="alert"></div>
+            <div class="message-box">
+              <strong>رسالة الإدارة:</strong>
+              <div>${user.message || 'لا توجد رسالة حالياً.'}</div>
             </div>
           </section>
         `;
 
+        const productSelect = document.getElementById('productCode');
+        productSelect.addEventListener('change', function () {
+          const code = this.value;
+          const product = state.products.find(p => p.code === code);
+          const info = document.getElementById('productInfo');
+          if (!product) {
+            info.innerHTML = 'اختر كود المنتج';
+            return;
+          }
+
+          info.innerHTML = `
+            <p><strong>اسم المنتج:</strong> ${product.name}</p>
+            <p><strong>الوصف:</strong> ${product.description}</p>
+            <p><strong>التفاصيل:</strong> ${product.detailText}</p>
+            <p><strong>الرابط:</strong> <a href="${product.link}" target="_blank" style="color:#60a5fa;">${product.link}</a></p>
+          `;
+        });
+
         renderNav();
       }
 
-      function copyCustomerCode() {
-        const code = document.getElementById('customerCodeValue')?.textContent;
-        if (!code) return;
-        navigator.clipboard.writeText(code).then(() => {
-          showToast('تم نسخ كود الحساب بنجاح.');
-        }).catch(() => {
-          showToast('تعذر نسخ الكود، الرجاء نسخها يدويًا.');
-        });
-      }
-
-      function showToast(message) {
-        const toast = document.createElement('div');
-        toast.textContent = message;
-        toast.style.position = 'fixed';
-        toast.style.bottom = '22px';
-        toast.style.left = '50%';
-        toast.style.transform = 'translateX(-50%)';
-        toast.style.background = '#171717';
-        toast.style.border = '1px solid rgba(255,255,255,0.1)';
-        toast.style.color = '#fff';
-        toast.style.padding = '12px 18px';
-        toast.style.borderRadius = '12px';
-        toast.style.zIndex = '2000';
-        toast.style.boxShadow = '0 18px 45px rgba(0,0,0,0.4)';
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 1800);
-      }
-
-      function claimInvoiceFromCustomer() {
+      function claimProduct() {
         const user = getCurrentUser();
-        const lookup = document.getElementById('invoiceLookup')?.value.trim();
+        if (!user) return;
 
-        if (!lookup) {
-          showAlert('customerClaimAlert', 'يرجى إدخال رقم الفاتورة أو كود المنتج.', 'error');
-          return;
-        }
-
+        const invoiceNumber = document.getElementById('invoiceNumber').value.trim();
+        const productCode = document.getElementById('productCode').value.trim();
         const state = getState();
-        const customer = state.users.find((item) => item.id === user.id);
-        if (!customer) {
-          showAlert('customerClaimAlert', 'الحساب غير موجود.', 'error');
+
+        if (!invoiceNumber || !productCode) {
+          showMessage('claimAlert', 'يرجى إدخال رقم الفاتورة واختيار المنتج', 'error');
           return;
         }
 
-        const invoice = state.invoices.find((item) =>
-          item.invoiceNumber === lookup ||
-          item.code === lookup ||
-          item.productCode === lookup
-        );
-
-        if (!invoice) {
-          showAlert('customerClaimAlert', 'لا توجد فاتورة مطابقة، يرجى التحقق من البيانات.', 'error');
+        const userIndex = state.users.findIndex(u => u.id === user.id);
+        if (userIndex < 0) {
+          showMessage('claimAlert', 'المستخدم غير موجود', 'error');
           return;
         }
 
-        if (invoice.customerId !== customer.customerCode) {
-          showAlert('customerClaimAlert', 'هذه الفاتورة لا تخص حسابك.', 'error');
-          return;
-        }
-
-        if (invoice.status === 'claimed') {
-          showAlert('customerClaimAlert', 'تم استلام هذه الفاتورة سابقًا في ' + formatDate(invoice.claimedAt) + '.', 'info');
-          return;
-        }
-
-        if (invoice.status === 'cancelled') {
-          showAlert('customerClaimAlert', 'هذه الفاتورة ملغاة ولا يمكن استلامها.', 'error');
-          return;
-        }
-
-        const product = state.products.find((item) => item.id === invoice.productId || item.code === invoice.productCode);
+        const product = state.products.find(p => p.code === productCode);
         if (!product) {
-          showAlert('customerClaimAlert', 'لا يوجد منتج مرتبط بهذه الفاتورة.', 'error');
+          showMessage('claimAlert', 'هذا المنتج غير موجود', 'error');
           return;
         }
 
-        invoice.status = 'claimed';
-        invoice.claimedAt = new Date().toISOString();
-        invoice.claimedBy = customer.username;
-        invoice.claimHistory = invoice.claimHistory || [];
-        invoice.claimHistory.push({
-          username: customer.username,
-          claimedAt: invoice.claimedAt,
-          lookup
-        });
+        const alreadyClaimed = state.users[userIndex].claims.some(c => c.invoiceNumber === invoiceNumber && c.productCode === productCode);
+        if (alreadyClaimed) {
+          showMessage('claimAlert', 'تم استخدام هذه الفاتورة من قبل ولا يمكن تكرارها', 'error');
+          return;
+        }
 
-        customer.claims = customer.claims || [];
-        customer.claims.push({
-          invoiceNumber: invoice.invoiceNumber,
-          productCode: invoice.productCode,
-          productName: product.name,
-          claimedAt: invoice.claimedAt,
-          status: 'claimed'
-        });
-
+        const rewardPoints = Number((Math.random() * 2.5 + 0.1).toFixed(2));
+        state.users[userIndex].points = Number((Number(state.users[userIndex].points || 0) + rewardPoints).toFixed(2));
+        state.users[userIndex].claims.push({ invoiceNumber, productCode, points: rewardPoints, time: new Date().toISOString() });
+        state.invoices.push({ invoiceNumber, productCode, username: state.users[userIndex].username, time: new Date().toISOString() });
         saveState(state);
-        showAlert('customerClaimAlert', `تم استلام المنتج بنجاح: ${product.name}.`, 'success');
-        renderCustomerDashboard();
+        setCurrentUser(state.users[userIndex]);
+
+        const info = document.getElementById('productInfo');
+        info.innerHTML = `
+          <p>تم التحقق بنجاح.</p>
+          <p>النقاط المضافة: <strong>${rewardPoints}</strong></p>
+          <p>المنتج: <strong>${product.name}</strong></p>
+          <p>الرابط: <a href="${product.link}" target="_blank" style="color:#60a5fa;">${product.link}</a></p>
+        `;
+
+        showMessage('claimAlert', `تمت العملية بنجاح! تم إضافة ${rewardPoints} نقطة.`, 'success');
       }
 
-      function renderAdminPanel() {
+      function renderAdmin() {
         const user = getCurrentUser();
         if (!user || user.role !== 'admin') {
-          renderAuthScreen();
+          renderAuth();
           return;
         }
 
         const state = getState();
-        const app = document.getElementById('app');
-        app.innerHTML = `
-          <section class="dashboard">
-            <div class="dashboard-header">
-              <h2>لوحة الإدارة</h2>
-              <span class="mini-tag">مسؤول</span>
-            </div>
-
-            <div class="stats-grid">
-              <div class="stat-card">
-                <span class="stat-label">إجمالي العملاء</span>
-                <div class="stat-value">${state.users.filter((u) => u.role !== 'admin').length}</div>
+        const cards = state.users.map(u => `
+          <div class="user-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong>${u.username}</strong>
+                <span class="status ${u.status || 'active'}">${u.status || 'active'}</span>
               </div>
-              <div class="stat-card">
-                <span class="stat-label">الفواتير</span>
-                <div class="stat-value">${state.invoices.length}</div>
-              </div>
-              <div class="stat-card">
-                <span class="stat-label">الحالة</span>
-                <div class="stat-value">${state.settings.maintenance ? 'موقفة' : 'مفتوحة'}</div>
-              </div>
+              <div>النقاط: <strong>${Number(u.points || 0).toFixed(2)}</strong></div>
             </div>
-
-            <div class="admin-tabs">
-              <button class="tab-btn active" type="button" data-target="customersTab">إدارة العملاء</button>
-              <button class="tab-btn" type="button" data-target="loyaltyTab">إدارة نقاط الولاء</button>
-              <button class="tab-btn" type="button" data-target="productsTab">إدارة المنتجات</button>
-              <button class="tab-btn" type="button" data-target="invoicesTab">الفواتير والطلبات</button>
-              <button class="tab-btn" type="button" data-target="messagesTab">رسائل الإدارة</button>
+            <p class="muted">الدور: ${u.role}</p>
+            <p class="muted">الرسالة: ${u.message || 'لا يوجد'}</p>
+            <div class="inline-actions">
+              <button class="btn secondary" onclick="toggleUserStatus(${u.id})">${u.status === 'suspended' ? 'تفعيل' : 'إيقاف'}</button>
+              <button class="btn warning" onclick="givePoints(${u.id})">إعطاء نقاط</button>
+              <button class="btn success" onclick="setUserMessage(${u.id})">رسالة</button>
+              <button class="btn danger" onclick="deleteUser(${u.id})">حذف</button>
             </div>
-
-            <div class="toolbar">
-              <button class="btn" type="button" onclick="toggleMaintenanceMode()">تبديل حالة الموقع</button>
-              <button class="btn secondary" type="button" onclick="renderCustomerDashboard()">عودة للوحة العميل</button>
-            </div>
-
-            <div id="customersTab" class="admin-section active">
-              <div class="panel">
-                <div class="toolbar">
-                  <input id="customerSearchInput" type="text" placeholder="ابحث باسم المستخدم أو المعرف" />
-                  <button class="btn" type="button" onclick="renderAdminPanel()">تحديث</button>
-                </div>
-                ${renderCustomersTable(state)}
-              </div>
-            </div>
-
-            <div id="loyaltyTab" class="admin-section">
-              <div class="panel">
-                <div class="grid-2">
-                  <div class="field">
-                    <label for="loyaltyCustomerId">اسم المستخدم أو كود العميل</label>
-                    <input id="loyaltyCustomerId" type="text" placeholder="ابحث عن العميل" />
-                  </div>
-                  <div class="field">
-                    <label for="loyaltyAmount">كمية النقاط</label>
-                    <input id="loyaltyAmount" type="number" min="-1000" step="1" placeholder="مثل: 50 أو -20" />
-                  </div>
-                </div>
-                <div class="field">
-                  <label for="loyaltyReason">سبب العملية</label>
-                  <input id="loyaltyReason" type="text" placeholder="مثال: مكافأة شراء أو خصم خدمة" />
-                </div>
-                <button class="btn" type="button" onclick="applyPointsAdjustment()">تأكيد التعديل</button>
-              </div>
-            </div>
-
-            <div id="productsTab" class="admin-section">
-              <div class="panel">
-                <div class="grid-2">
-                  <div class="field">
-                    <label for="productName">اسم المنتج</label>
-                    <input id="productName" type="text" placeholder="اسم المنتج" />
-                  </div>
-                  <div class="field">
-                    <label for="productCode">كود المنتج</label>
-                    <input id="productCode" type="text" placeholder="مثل: P-500" />
-                  </div>
-                </div>
-                <div class="field">
-                  <label for="productDescription">وصف المنتج</label>
-                  <input id="productDescription" type="text" placeholder="وصف المنتج" />
-                </div>
-                <div class="field">
-                  <label for="productDetailText">بيانات المنتج التي تظهر للعميل</label>
-                  <input id="productDetailText" type="text" placeholder="ما الذي سيظهر بعد الاستلام" />
-                </div>
-                <div class="field">
-                  <label for="productLink">رابط المنتج</label>
-                  <input id="productLink" type="text" placeholder="https://example.com" />
-                </div>
-                <div class="field">
-                  <label for="productAvailability">حالة التوفر</label>
-                  <select id="productAvailability">
-                    <option value="true">متاح</option>
-                    <option value="false">غير متاح</option>
-                  </select>
-                </div>
-                <button class="btn" type="button" onclick="saveProductFromForm()">إضافة أو تحديث المنتج</button>
-                ${renderProductsTable(state)}
-              </div>
-            </div>
-
-            <div id="invoicesTab" class="admin-section">
-              <div class="panel">
-                <div class="grid-2">
-                  <div class="field">
-                    <label for="invoiceCustomerId">كود حساب العميل</label>
-                    <input id="invoiceCustomerId" type="text" placeholder="DATE-ABC123" />
-                  </div>
-                  <div class="field">
-                    <label for="invoiceProductSelect">اختر المنتج</label>
-                    <select id="invoiceProductSelect"></select>
-                  </div>
-                </div>
-                <div class="grid-2">
-                  <div class="field">
-                    <label for="invoiceNumber">رقم الفاتورة</label>
-                    <input id="invoiceNumber" type="text" placeholder="DATE-192" />
-                  </div>
-                  <div class="field">
-                    <label for="invoiceStatus">حالة الفاتورة</label>
-                    <select id="invoiceStatus">
-                      <option value="pending">قيد التجهيز</option>
-                      <option value="ready">جاهز للاستلام</option>
-                      <option value="claimed">تم الاستلام</option>
-                      <option value="cancelled">ملغى</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="field">
-                  <label for="invoiceCode">كود الاستلام</label>
-                  <input id="invoiceCode" type="text" placeholder="أو استخدم كود الاستلام" />
-                </div>
-                <button class="btn" type="button" onclick="createInvoiceFromAdmin()">إنشاء فاتورة جديدة</button>
-                ${renderInvoicesTable(state)}
-              </div>
-            </div>
-
-            <div id="messagesTab" class="admin-section">
-              <div class="panel">
-                <div class="field">
-                  <label for="messageTargetType">نوع الرسالة</label>
-                  <select id="messageTargetType">
-                    <option value="all">لجميع العملاء</option>
-                    <option value="user">مستخدم محدد</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="messageTargetUser">اسم المستخدم المستهدف</label>
-                  <input id="messageTargetUser" type="text" placeholder="اختياري إذا كانت الرسالة خاصة" />
-                </div>
-                <div class="field">
-                  <label for="adminMessageText">نص الرسالة</label>
-                  <textarea id="adminMessageText" rows="5" placeholder="اكتب رسالة الإدارة"></textarea>
-                </div>
-                <button class="btn" type="button" onclick="publishAnnouncement()">إرسال الرسالة</button>
-              </div>
-            </div>
-          </section>
-        `;
-
-        const productOptions = state.products.map((product) => `
-          <option value="${escapeHtml(product.id)}">${escapeHtml(product.name)} (${escapeHtml(product.code)})</option>
+          </div>
         `).join('');
 
-        const invoiceProductSelect = document.getElementById('invoiceProductSelect');
-        if (invoiceProductSelect) {
-          invoiceProductSelect.innerHTML = productOptions;
-        }
+        document.getElementById('app').innerHTML = `
+          <section class="panel">
+            <h2>لوحة الإدارة</h2>
+            <div class="stats">
+              <div class="stat"><strong>${state.users.filter(u => u.status === 'active').length}</strong> مستخدمين نشطين</div>
+              <div class="stat"><strong>${state.users.length}</strong> إجمالي الحسابات</div>
+              <div class="stat"><strong>${state.invoices.length}</strong> عدد الفواتير</div>
+              <div class="stat"><strong>${state.settings.maintenance ? 'موقوف' : 'مفتوح'}</strong> حالة الموقع</div>
+            </div>
 
-        document.querySelectorAll('.tab-btn').forEach((button) => {
-          button.addEventListener('click', () => {
-            document.querySelectorAll('.tab-btn').forEach((tab) => tab.classList.remove('active'));
-            document.querySelectorAll('.admin-section').forEach((section) => section.classList.remove('active'));
-            button.classList.add('active');
-            document.getElementById(button.dataset.target).classList.add('active');
-          });
-        });
+            <div class="inline-actions" style="margin-bottom: 18px;">
+              <button class="btn" onclick="toggleMaintenance()">تبديل حالة الموقع</button>
+              <button class="btn secondary" onclick="renderDashboard()">عودة للوحة المستخدم</button>
+            </div>
+
+            <div class="card-list">${cards}</div>
+          </section>
+        `;
 
         renderNav();
       }
 
-      function renderCustomersTable(state) {
-        const query = (document.getElementById('customerSearchInput')?.value || '').trim().toLowerCase();
-        const filtered = state.users.filter((user) => {
-          if (!query) return true;
-          const searchIn = `${user.username} ${user.customerCode || ''} ${user.id}`.toLowerCase();
-          return searchIn.includes(query);
-        });
-
-        const rows = filtered.map((user) => `
-          <tr>
-            <td>${escapeHtml(user.username)}</td>
-            <td>${escapeHtml(user.customerCode || '—')}</td>
-            <td>${escapeHtml(user.role)}</td>
-            <td>${escapeHtml(user.status)}</td>
-            <td>${formatDate(user.createdAt)}</td>
-            <td>${Number(user.points || 0)} نقطة</td>
-            <td>
-              <div class="admin-actions">
-                <button class="btn small-btn" type="button" onclick="toggleUserStatus('${user.id}')">${user.status === 'active' ? 'تعطيل' : 'تفعيل'}</button>
-                <button class="btn secondary small-btn" type="button" onclick="adjustCustomerView('${user.id}')">فتح الملف</button>
-              </div>
-            </td>
-          </tr>
-        `).join('');
-
-        return `
-          <table class="customers-table">
-            <thead>
-              <tr>
-                <th>اسم المستخدم</th>
-                <th>كود العميل</th>
-                <th>الدور</th>
-                <th>الحالة</th>
-                <th>تاريخ التسجيل</th>
-                <th>النقاط</th>
-                <th>إجراءات</th>
-              </tr>
-            </thead>
-            <tbody>${rows || '<tr><td colspan="7">لا يوجد مستخدمون.</td></tr>'}</tbody>
-          </table>
-        `;
-      }
-
-      function renderProductsTable(state) {
-        return `
-          <div style="margin-top:18px;">
-            <table class="products-table">
-              <thead>
-                <tr>
-                  <th>اسم المنتج</th>
-                  <th>الكود</th>
-                  <th>الوصف</th>
-                  <th>الحالة</th>
-                  <th>إجراءات</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${state.products.map((product) => `
-                  <tr>
-                    <td>${escapeHtml(product.name)}</td>
-                    <td>${escapeHtml(product.code)}</td>
-                    <td>${escapeHtml(product.description)}</td>
-                    <td>${product.available ? 'متاح' : 'غير متاح'}</td>
-                    <td>
-                      <div class="admin-actions">
-                        <button class="btn small-btn" type="button" onclick="populateProductForm('${product.id}')">تعديل</button>
-                        <button class="btn danger small-btn" type="button" onclick="deleteProduct('${product.id}')">حذف</button>
-                      </div>
-                    </td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
-
-      function renderInvoicesTable(state) {
-        return `
-          <div style="margin-top:18px;">
-            <table class="invoices-table">
-              <thead>
-                <tr>
-                  <th>رقم الفاتورة</th>
-                  <th>العميل</th>
-                  <th>المنتج</th>
-                  <th>الحالة</th>
-                  <th>تاريخ الإنشاء</th>
-                  <th>إجراءات</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${state.invoices.map((invoice) => `
-                  <tr>
-                    <td>${escapeHtml(invoice.invoiceNumber)}</td>
-                    <td>${escapeHtml(invoice.customerId || '—')}</td>
-                    <td>${escapeHtml(invoice.productName || '—')}</td>
-                    <td>${escapeHtml(invoice.status || 'pending')}</td>
-                    <td>${formatDate(invoice.createdAt)}</td>
-                    <td>
-                      <div class="admin-actions">
-                        <button class="btn small-btn" type="button" onclick="cancelInvoice('${invoice.id}')">إلغاء</button>
-                      </div>
-                    </td>
-                  </tr>
-                `).join('') || '<tr><td colspan="6">لا توجد فواتير.</td></tr>'}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
-
-      function toggleUserStatus(userId) {
+      function toggleUserStatus(id) {
         const state = getState();
-        const user = state.users.find((item) => item.id === userId);
-        if (!user) return;
-
-        user.status = user.status === 'active' ? 'inactive' : 'active';
-        state.auditLogs.unshift({
-          id: uid('audit'),
-          actor: getCurrentUser().username,
-          action: 'تغيير حالة العميل',
-          details: `${user.username} -> ${user.status}`,
-          createdAt: new Date().toISOString()
-        });
+        const index = state.users.findIndex(u => u.id === id);
+        if (index < 0) return;
+        state.users[index].status = state.users[index].status === 'suspended' ? 'active' : 'suspended';
         saveState(state);
-        renderAdminPanel();
+        renderAdmin();
       }
 
-      function adjustCustomerView(userId) {
-        const state = getState();
-        const user = state.users.find((item) => item.id === userId);
-        if (!user) return;
-
-        const details = {
-          ...user,
-          pointsLog: user.pointsLog || []
-        };
-
-        alert(`اسم المستخدم: ${details.username}\nالكود: ${details.customerCode}\nالنقاط: ${details.points || 0}\nعدد الطلبات: ${(details.claims || []).length}`);
-      }
-
-      function applyPointsAdjustment() {
-        const rawCustomer = document.getElementById('loyaltyCustomerId')?.value.trim();
-        const amount = Number(document.getElementById('loyaltyAmount')?.value);
-        const reason = document.getElementById('loyaltyReason')?.value.trim() || 'تعديل يدوي';
-
-        if (!rawCustomer || Number.isNaN(amount)) {
-          alert('يرجى إدخال العميل وكمية النقاط بشكل صحيح.');
-          return;
-        }
+      function givePoints(id) {
+        const value = Number(prompt('أدخل عدد النقاط:', '0.5'));
+        if (!Number.isFinite(value) || value <= 0) return;
 
         const state = getState();
-        const customer = state.users.find((user) =>
-          user.username.toLowerCase() === rawCustomer.toLowerCase() ||
-          user.customerCode?.toLowerCase() === rawCustomer.toLowerCase()
-        );
+        const index = state.users.findIndex(u => u.id === id);
+        if (index < 0) return;
 
-        if (!customer) {
-          alert('لم يتم العثور على العميل.');
-          return;
-        }
-
-        const nextBalance = Number(customer.points || 0) + amount;
-        if (nextBalance < 0) {
-          alert('لا يمكن أن يكون رصيد النقاط سالبًا.');
-          return;
-        }
-
-        customer.points = Number(nextBalance.toFixed(2));
-        customer.pointsLog = customer.pointsLog || [];
-        customer.pointsLog.push({
-          id: uid('point'),
-          amount,
-          reason,
-          type: amount >= 0 ? 'earned' : 'deducted',
-          actor: getCurrentUser().username,
-          createdAt: new Date().toISOString()
-        });
-
-        state.auditLogs.unshift({
-          id: uid('audit'),
-          actor: getCurrentUser().username,
-          action: 'تعديل نقاط الولاء',
-          details: `${customer.username} | ${amount} | ${reason}`,
-          createdAt: new Date().toISOString()
-        });
-
+        state.users[index].points = Number((Number(state.users[index].points || 0) + value).toFixed(2));
+        state.users[index].message = `تمت إضافة ${value} نقطة من الإدارة`;
         saveState(state);
-        renderAdminPanel();
+        renderAdmin();
       }
 
-      function saveProductFromForm() {
+      function setUserMessage(id) {
+        const msg = prompt('اكتب رسالة الإدارة:');
+        if (msg === null) return;
+
         const state = getState();
-        const id = document.getElementById('productName')?.dataset.productId || uid('product');
-        const name = document.getElementById('productName')?.value.trim();
-        const code = document.getElementById('productCode')?.value.trim();
-        const description = document.getElementById('productDescription')?.value.trim();
-        const detailText = document.getElementById('productDetailText')?.value.trim();
-        const link = document.getElementById('productLink')?.value.trim();
-        const available = document.getElementById('productAvailability')?.value === 'true';
+        const index = state.users.findIndex(u => u.id === id);
+        if (index < 0) return;
 
-        if (!name || !code) {
-          alert('يرجى إدخال اسم المنتج وكود المنتج.');
-          return;
-        }
-
-        const existingIndex = state.products.findIndex((product) => product.code.toLowerCase() === code.toLowerCase());
-        const productData = {
-          id,
-          name,
-          code,
-          description,
-          detailText,
-          link,
-          available
-        };
-
-        if (existingIndex >= 0 && state.products[existingIndex].id !== id) {
-          alert('هذا الكود موجود بالفعل، لا يمكن تكرار كود المنتج.');
-          return;
-        }
-
-        const productIndex = state.products.findIndex((product) => product.id === id);
-        if (productIndex >= 0) {
-          state.products[productIndex] = productData;
-        } else {
-          state.products.push(productData);
-        }
-
-        state.auditLogs.unshift({
-          id: uid('audit'),
-          actor: getCurrentUser().username,
-          action: 'تعديل المنتج',
-          details: `${name} | ${code}`,
-          createdAt: new Date().toISOString()
-        });
-
+        state.users[index].message = msg;
         saveState(state);
-        renderAdminPanel();
+        renderAdmin();
       }
 
-      function populateProductForm(productId) {
-        const state = getState();
-        const product = state.products.find((item) => item.id === productId);
-        if (!product) return;
+      function deleteUser(id) {
+        if (!confirm('هل أنت متأكد من حذف هذا الحساب؟')) return;
 
-        document.getElementById('productName').value = product.name;
-        document.getElementById('productName').dataset.productId = product.id;
-        document.getElementById('productCode').value = product.code;
-        document.getElementById('productDescription').value = product.description;
-        document.getElementById('productDetailText').value = product.detailText || '';
-        document.getElementById('productLink').value = product.link || '';
-        document.getElementById('productAvailability').value = String(Boolean(product.available));
-      }
-
-      function deleteProduct(productId) {
-        if (!confirm('هل أنت متأكد من حذف هذا المنتج؟')) return;
         const state = getState();
-        state.products = state.products.filter((product) => product.id !== productId);
+        state.users = state.users.filter(u => u.id !== id);
         saveState(state);
-        renderAdminPanel();
+
+        const current = getCurrentUser();
+        if (current && current.id === id) {
+          setCurrentUser(null);
+          renderAuth();
+          return;
+        }
+
+        renderAdmin();
       }
 
-      function createInvoiceFromAdmin() {
-        const state = getState();
-        const customerCode = document.getElementById('invoiceCustomerId')?.value.trim();
-        const productId = document.getElementById('invoiceProductSelect')?.value;
-        const invoiceNumber = document.getElementById('invoiceNumber')?.value.trim();
-        const invoiceStatus = document.getElementById('invoiceStatus')?.value || 'pending';
-        const invoiceCode = document.getElementById('invoiceCode')?.value.trim();
-
-        if (!customerCode || !productId || !invoiceNumber) {
-          alert('يرجى إدخال كود العميل والمنتج ورقم الفاتورة.');
-          return;
-        }
-
-        const customer = state.users.find((user) => user.customerCode?.toLowerCase() === customerCode.toLowerCase() || user.username.toLowerCase() === customerCode.toLowerCase());
-        if (!customer) {
-          alert('لم يتم العثور على العميل المحدد.');
-          return;
-        }
-
-        const product = state.products.find((item) => item.id === productId);
-        if (!product) {
-          alert('هذا المنتج غير موجود.');
-          return;
-        }
-
-        const duplicate = state.invoices.some((invoice) => invoice.invoiceNumber.toLowerCase() === invoiceNumber.toLowerCase());
-        if (duplicate) {
-          alert('رقم الفاتورة موجود بالفعل، خصص رقمًا فريدًا.');
-          return;
-        }
-
-        const invoice = {
-          id: uid('invoice'),
-          invoiceNumber,
-          code: invoiceCode || `RCPT-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
-          customerId: customer.customerCode,
-          customerName: customer.username,
-          productId: product.id,
-          productCode: product.code,
-          productName: product.name,
-          createdAt: new Date().toISOString(),
-          status: invoiceStatus,
-          isSingleUse: true,
-          claimHistory: [],
-          deliveryText: product.detailText || 'تم تجهيز الطلب بنجاح.'
-        };
-
-        state.invoices.push(invoice);
-        state.auditLogs.unshift({
-          id: uid('audit'),
-          actor: getCurrentUser().username,
-          action: 'إنشاء فاتورة',
-          details: `${invoice.invoiceNumber} | ${customer.username} | ${product.name}`,
-          createdAt: new Date().toISOString()
-        });
-
-        saveState(state);
-        renderAdminPanel();
-      }
-
-      function cancelInvoice(invoiceId) {
-        const state = getState();
-        const invoice = state.invoices.find((item) => item.id === invoiceId);
-        if (!invoice) return;
-
-        invoice.status = 'cancelled';
-        saveState(state);
-        renderAdminPanel();
-      }
-
-      function publishAnnouncement() {
-        const rawType = document.getElementById('messageTargetType')?.value || 'all';
-        const targetUser = document.getElementById('messageTargetUser')?.value.trim();
-        const message = document.getElementById('adminMessageText')?.value.trim();
-
-        if (!message) {
-          alert('يرجى كتابة نص الرسالة.');
-          return;
-        }
-
-        const state = getState();
-        const announcement = {
-          id: uid('announcement'),
-          scope: rawType,
-          userId: rawType === 'user' ? (state.users.find((u) => u.username.toLowerCase() === targetUser.toLowerCase())?.id || null) : null,
-          message,
-          createdAt: new Date().toISOString()
-        };
-
-        state.announcements.push(announcement);
-        saveState(state);
-        renderAdminPanel();
-      }
-
-      function toggleMaintenanceMode() {
+      function toggleMaintenance() {
         const state = getState();
         state.settings.maintenance = !state.settings.maintenance;
         saveState(state);
-
-        if (state.settings.maintenance) {
-          renderMaintenanceOverlay();
-        } else {
-          closeMaintenanceModal();
-        }
-
-        renderAdminPanel();
+        if (state.settings.maintenance) renderMaintenanceOverlay();
+        else closeMaintenance();
+        renderAdmin();
       }
 
       function renderMaintenanceOverlay() {
-        const modal = document.getElementById('maintenanceModal');
-        if (modal) modal.classList.add('show');
+        document.getElementById('maintenanceModal').classList.add('show');
       }
 
-      function closeMaintenanceModal() {
-        const modal = document.getElementById('maintenanceModal');
-        if (modal) modal.classList.remove('show');
+      function closeMaintenance() {
+        document.getElementById('maintenanceModal').classList.remove('show');
       }
 
-      function attachGlobalShortcuts() {
-        document.addEventListener('keydown', function (event) {
-          if (event.key === 'Enter') {
-            const active = document.activeElement && document.activeElement.tagName;
-            if (active === 'INPUT' || active === 'TEXTAREA') {
-              const forms = ['loginUsername', 'loginPassword', 'registerUsername', 'registerPassword', 'registerConfirm'];
-              if (forms.includes(document.activeElement.id)) {
-                loginUser();
-              }
-            }
-          }
-        });
-      }
-
-      function initApp() {
+      function init() {
         const current = getCurrentUser();
         const state = getState();
 
-        if (!state.users.length) {
-          renderAuthScreen();
+        if (!current) {
+          renderAuth();
           return;
         }
 
-        if (current) {
-          const found = state.users.find((user) => user.id === current.id);
-          if (found) {
-            if (found.role === 'admin') {
-              renderAdminPanel();
-            } else {
-              renderCustomerDashboard();
-            }
-            return;
-          }
+        if (state.settings.maintenance && current.role !== 'admin') {
+          renderMaintenanceOverlay();
+          return;
         }
 
-        renderAuthScreen();
+        renderDashboard();
       }
 
-      initApp();
+      init();
     </script>
+  </body>
+</html>
