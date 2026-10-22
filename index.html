@@ -1,103 +1,47 @@
 <!doctype html>
+
 <html lang="ar" dir="rtl">
+
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0a0508">
-<title>DATE PORTAL</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>DATE | نظام تسليم الطلبات</title>
+
 <style>
-:root{--bg:#090609;--panel:#140b10;--panel2:#1b0d14;--red:#ff2447;--red2:#ff536b;--text:#fff4f6;--muted:#bba8ad;--line:#51202d;--green:#4ce0a0}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#581021 0%,#170810 34%,var(--bg) 70%);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;min-height:100vh}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 30%,#ff24470a 50%,transparent 70%);animation:sweep 8s linear infinite}
-@keyframes sweep{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-*{scrollbar-color:#652032 #10070b}button,input,textarea,select{font:inherit}button{cursor:pointer}
-.wrap{max-width:1180px;margin:auto;padding:22px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0 28px;border-bottom:1px solid #ffffff12}
-.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#ff536b,#a50027);box-shadow:0 0 28px #ff24474d;font-weight:1000;font-size:22px}.brand h1{margin:0;letter-spacing:2px;font-size:21px}.brand small{display:block;color:var(--muted);font-size:11px;letter-spacing:2px;margin-top:3px}
-.pill{border:1px solid #672435;border-radius:999px;padding:9px 13px;color:#ffc2cc;background:#ff24470d;font-size:12px}
-.hero{padding:48px 0 28px;max-width:780px}.eyebrow{color:var(--red2);font-size:12px;letter-spacing:2px;font-weight:800}.hero h2{font-size:clamp(32px,6vw,58px);line-height:1.12;margin:13px 0;background:linear-gradient(90deg,#fff,#ff7c90 55%,#ff2447);background-clip:text;color:transparent;text-shadow:0 0 35px #ff24471c}.hero p{color:var(--muted);line-height:1.9;max-width:660px}
-.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.card{grid-column:span 4;background:linear-gradient(145deg,#1b0d14eF,#10090d);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 16px 45px #0003;position:relative;overflow:hidden}.card:after{content:"";position:absolute;top:0;right:18px;width:90px;height:1px;background:var(--red);box-shadow:0 0 20px 2px #ff2447}.card h3{margin:0 0 8px;font-size:17px}.card p{margin:0;color:var(--muted);font-size:13px;line-height:1.8}.ico{font-size:24px;margin-bottom:17px;color:var(--red2)}
-.panel{background:#10090d;border:1px solid var(--line);border-radius:22px;padding:22px;margin:18px 0;box-shadow:0 20px 60px #0003}.panelhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.panelhead h3{margin:0}.muted{color:var(--muted);font-size:13px}.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}.tab{border:1px solid #4c202a;background:#1a0d13;color:#d8bdc3;padding:10px 14px;border-radius:12px}.tab.active,.btn{background:linear-gradient(100deg,#ff2447,#c90c32);border:1px solid #ff536b;color:white;box-shadow:0 0 22px #ff244726}.btn{padding:11px 16px;border-radius:12px;font-weight:800}.btn.secondary{background:#1a0d13;border-color:#54202d;box-shadow:none;color:#f3dce1}.btn.danger{background:#5b0d20;border-color:#b31b3b;box-shadow:none}.btn:focus,input:focus,textarea:focus{outline:2px solid #ff536b;outline-offset:2px}
-.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:#e6cbd1}.field input,.field textarea,.field select{width:100%;border:1px solid #51202d;border-radius:12px;background:#0b0609;color:white;padding:12px 13px}.field textarea{min-height:95px;resize:vertical}
-.notice{border:1px solid #714020;background:#2b180d;color:#ffd7a7;padding:12px 14px;border-radius:12px;font-size:12px;line-height:1.8;margin:12px 0}.status{display:inline-flex;align-items:center;gap:6px;border:1px solid #28654d;background:#0c281e;color:#a4f5d2;padding:5px 9px;border-radius:999px;font-size:11px}
-.statgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stat{border:1px solid #48202a;background:#190c12;border-radius:15px;padding:16px}.stat small{color:var(--muted)}.stat strong{display:block;font-size:25px;margin-top:8px;color:#ff7185}
-.tablewrap{overflow:auto;border:1px solid #48202a;border-radius:14px}table{border-collapse:collapse;width:100%;min-width:650px}th,td{text-align:right;padding:13px;border-bottom:1px solid #ffffff0e;font-size:13px}th{color:#ff9baa;background:#1a0b11}td{color:#e9dce0}tr:last-child td{border-bottom:0}.empty{padding:24px;text-align:center;color:var(--muted)}
-.hidden{display:none!important}.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.product{padding:16px;border:1px solid #48202a;background:#180b11;border-radius:15px}.product h4{margin:0 0 7px}.product code{color:#ff899b;word-break:break-all}.foot{text-align:center;color:#725b62;font-size:11px;padding:28px 0}
-@media(max-width:760px){.card{grid-column:span 6}.statgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding-top:32px}.top{align-items:flex-start}.pill{display:none}}
-@media(max-width:500px){.wrap{padding:15px}.card{grid-column:span 12}.formgrid,.products{grid-template-columns:1fr}.panel{padding:16px}.brand h1{font-size:17px}.stat strong{font-size:22px}}
-</style>
-</head>
-<body>
-<div class="wrap">
-<header class="top">
-  <div class="brand"><div class="logo">D</div><div><h1>DATE PORTAL</h1><small>CLIENT & PRODUCT PORTAL</small></div></div>
-  <div class="pill">● تجربة الواجهة — النسخة الأولية</div>
-</header>
-<section class="hero">
-  <div class="eyebrow">WELCOME TO YOUR PORTAL</div>
-  <h2>كل منتجاتك وطلباتك<br>في مكان واحد</h2>
-  <p>بوابة رقمية بتصميم أحمر متوهج لإدارة المنتجات والفواتير ونقاط الولاء. سجّل دخولك للعرض التجريبي أو استكشف لوحة الإدارة النموذجية.</p>
-</section>
 
-<div class="grid">
-  <article class="card"><div class="ico">⌁</div><h3>حسابك وكودك التعريفي</h3><p>كود ثابت لكل حساب لربط المنتجات والفواتير بالعميل الصحيح.</p></article>
-  <article class="card"><div class="ico">▣</div><h3>استلام المنتجات</h3><p>أدخل كود المنتج المرتبط بحسابك لعرض محتوى التسليم المخصص لك.</p></article>
-  <article class="card"><div class="ico">✦</div><h3>نقاط الولاء</h3><p>مكافآت بين 0.10 و0.60 ريال لكل فاتورة مؤهلة، وفق إعدادات النظام.</p></article>
-</div>
+:root{--bg:#08090b;--panel:#111318;--panel2:#171a20;--line:#292d36;--text:#f5f6f8;--muted:#9da3af;--red:#f04452;--red2:#a90e25;--ok:#38c793;--warn:#ffcc66}
 
-<section class="panel" id="access">
-  <div class="panelhead"><div><h3>الدخول إلى البوابة</h3><div class="muted">واجهة تجريبية — لا تدخل بيانات سرية حقيقية</div></div><span class="status">● الواجهة تعمل</span></div>
-  <div class="tabs"><button class="tab active" data-mode="customer">دخول العميل</button><button class="tab" data-mode="admin">واجهة الإدارة</button></div>
-  <form id="loginForm" class="formgrid">
-    <div class="field"><label for="loginEmail">البريد الإلكتروني التجريبي</label><input id="loginEmail" type="email" placeholder="customer@example.com" autocomplete="off" required></div>
-    <div class="field"><label for="loginCode">كلمة مرور / رمز تجريبي</label><input id="loginCode" type="password" placeholder="اكتب أي قيمة تجريبية" autocomplete="off" required></div>
-    <div class="field full"><button class="btn" type="submit" id="loginButton">عرض لوحة العميل التجريبية</button></div>
-  </form>
-  <div class="notice">تنبيه أمني: هذه صفحة HTML محلية/ثابتة. تسجيل الدخول وكود الإدارة هنا ليسا حقيقيين ولا توجد قاعدة بيانات أو حماية خادم. لا تستخدمها لحفظ منتجات أو أسرار فعلية.</div>
-</section>
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#191b22 0,#08090b 48%);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;min-height:100vh}
 
-<section class="panel hidden" id="customerPanel">
-  <div class="panelhead"><div><h3>لوحة العميل</h3><div class="muted">نموذج واجهة العميل</div></div><button class="btn secondary" onclick="logout()">خروج</button></div>
-  <div class="statgrid"><div class="stat"><small>الكود التعريفي (مثال)</small><strong style="font-size:17px">DATE-A7K92M</strong></div><div class="stat"><small>نقاط الولاء</small><strong>0.30 ر.س</strong></div><div class="stat"><small>منتجاتي</small><strong>0</strong></div><div class="stat"><small>فواتيري</small><strong>0</strong></div></div>
-  <div style="height:18px"></div><div class="field"><label for="productCode">كود المنتج</label><input id="productCode" placeholder="مثال PROD-8X29KL"></div><div style="height:12px"></div><button class="btn" onclick="demoClaim()">التحقق من كود المنتج</button><div id="claimResult" class="empty">لا توجد منتجات تجريبية مرتبطة بهذا الحساب</div>
-</section>
+button,input,textarea,select{font:inherit}button{cursor:pointer;border:0}a{color:inherit}
 
-<section class="panel hidden" id="adminPanel">
-  <div class="panelhead"><div><h3>لوحة الإدارة</h3><div class="muted">تصور واجهة إدارة النظام</div></div><button class="btn secondary" onclick="logout()">خروج</button></div>
-  <div class="statgrid"><div class="stat"><small>العملاء</small><strong id="customerCount">0</strong></div><div class="stat"><small>المنتجات</small><strong id="productCount">0</strong></div><div class="stat"><small>الفواتير</small><strong>0</strong></div><div class="stat"><small>وضع الموقع</small><strong id="maintenanceStat" style="font-size:16px">متاح</strong></div></div>
-  <div style="height:18px"></div>
-  <div class="tabs"><button class="tab active" data-admin-tab="products">إضافة منتج</button><button class="tab" data-admin-tab="settings">إعدادات الموقع</button><button class="tab" data-admin-tab="customers">العملاء</button></div>
-  <div id="admin-products">
-    <form id="productForm" class="formgrid">
-      <div class="field"><label for="ownerCode">الكود التعريفي للعميل</label><input id="ownerCode" placeholder="DATE-A7K92M" required></div>
-      <div class="field"><label for="newProductCode">كود المنتج</label><input id="newProductCode" placeholder="PROD-8X29KL" required></div>
-      <div class="field"><label for="productName">اسم المنتج</label><input id="productName" placeholder="اسم المنتج" required></div>
-      <div class="field"><label for="productType">نوع التسليم</label><select id="productType"><option>محتوى نصي</option><option>تعليمات استلام</option></select></div>
-      <div class="field full"><label for="productPayload">محتوى المنتج التجريبي</label><textarea id="productPayload" placeholder="ضع محتوى تجريبيًا فقط — لا تضع كلمات مرور أو بيانات حساسة" required></textarea></div>
-      <div class="field full"><button class="btn" type="submit">إضافة المنتج إلى قائمة العرض</button></div>
-    </form>
-    <div class="notice">هذه الإضافة تحفظ البيانات داخل ذاكرة الصفحة فقط؛ قد تختفي عند إعادة التحميل. التحقق من ملكية العميل هنا غير آمن ولا يُعتمد عليه قبل ربط قاعدة بيانات وخادم.</div>
-    <h3>المنتجات المضافة في هذه الجلسة</h3><div id="productList" class="products"><div class="empty">لم تتم إضافة منتجات</div></div>
-  </div>
-  <div id="admin-settings" class="hidden">
-    <div class="field"><label>وضع الصيانة</label><button class="btn danger" id="maintenanceToggle" type="button">تفعيل وضع الصيانة التجريبي</button><p class="muted" id="maintenanceHelp">هذا التبديل يغيّر العرض في هذه الصفحة فقط، ولا يوقف الموقع المنشور.</p></div>
-    <div style="height:14px"></div><div class="field"><label for="maintenanceMessage">رسالة الصيانة</label><input id="maintenanceMessage" value="نعتذر، الموقع تحت الصيانة وسيعود قريبًا"></div><div style="height:12px"></div><button class="btn secondary" type="button" onclick="alert('نموذج فقط: حفظ الإعدادات الحقيقي يحتاج قاعدة بيانات وخادم')">حفظ الإعدادات التجريبية</button>
-  </div>
-  <div id="admin-customers" class="hidden"><div class="empty">إدارة العملاء الحقيقية تحتاج نظام حسابات وقاعدة بيانات. لا توجد حسابات فعلية في هذه النسخة.</div></div>
-</section>
-<footer class="foot">DATE PORTAL © 2026 · نسخة واجهة أولية — يلزم Backend قبل الاستخدام الحقيقي</footer>
-</div>
-<script>
-let mode='customer', products=[], maintenance=false, adminTab='products';
-const $=id=>document.getElementById(id);
-document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));$('loginButton').textContent=mode==='admin'?'عرض لوحة الإدارة النموذجية':'عرض لوحة العميل التجريبية';}));
-$('loginForm').addEventListener('submit',e=>{e.preventDefault();$('access').classList.add('hidden');$('customerPanel').classList.toggle('hidden',mode!=='customer');$('adminPanel').classList.toggle('hidden',mode!=='admin');window.scrollTo({top:0,behavior:'smooth'});});
-function logout(){$('access').classList.remove('hidden');$('customerPanel').classList.add('hidden');$('adminPanel').classList.add('hidden');}
-function demoClaim(){const c=$('productCode').value.trim();const found=products.find(p=>p.code.toLowerCase()===c.toLowerCase()&&p.owner.toLowerCase()==='date-a7k92m');$('claimResult').textContent=found?'نموذج محتوى المنتج: '+found.payload:'لم يتم العثور على منتج تجريبي مرتبط بهذا الكود والحساب. تذكّر أن التحقق هنا غير آمن.';}
-$('productForm').addEventListener('submit',e=>{e.preventDefault();const p={owner:$('ownerCode').value.trim(),code:$('newProductCode').value.trim(),name:$('productName').value.trim(),type:$('productType').value,payload:$('productPayload').value.trim()};if(products.some(x=>x.code.toLowerCase()===p.code.toLowerCase())){alert('كود المنتج مكرر في هذه الجلسة');return;}products.push(p);renderProducts();$('productForm').reset();});
-function renderProducts(){$('productCount').textContent=products.length;$('productList').innerHTML=products.length?products.map(p=>`<article class="product"><h4>${escapeHtml(p.name)}</h4><div class="muted">المالك: <code>${escapeHtml(p.owner)}</code></div><div class="muted">كود المنتج: <code>${escapeHtml(p.code)}</code></div><p class="muted">${escapeHtml(p.type)}</p></article>`).join(''):'<div class="empty">لم تتم إضافة منتجات</div>';}
-function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-document.querySelectorAll('[data-admin-tab]').forEach(b=>b.addEventListener('click',()=>{adminTab=b.dataset.adminTab;document.querySelectorAll('[data-admin-tab]').forEach(x=>x.classList.toggle('active',x===b));['products','settings','customers'].forEach(t=>$('admin-'+t).classList.toggle('hidden',t!==adminTab));}));
-$('maintenanceToggle').addEventListener('click',()=>{maintenance=!maintenance;$('maintenanceToggle').textContent=maintenance?'إيقاف وضع الصيانة التجريبي':'تفعيل وضع الصيانة التجريبي';$('maintenanceStat').textContent=maintenance?'صيانة':'متاح';$('maintenanceHelp').textContent=maintenance?$('maintenanceMessage').value:'هذا التبديل يغيّر العرض في هذه الصفحة فقط، ولا يوقف الموقع المنشور.';});
-</script>
-</body>
-</html>
+.wrap{width:min(1120px,calc(100% - 32px));margin:auto}.top{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-bottom:1px solid #ffffff12}
+
+.brand{font-weight:950;font-size:24px;letter-spacing:3px}.brand span{color:var(--red)}.tag{font-size:12px;color:var(--muted);margin-top:3px}
+
+.pill{border:1px solid var(--line);background:#ffffff08;color:#d9dce3;border-radius:999px;padding:8px 12px;font-size:12px}
+
+main{padding:34px 0 64px}.hero{text-align:center;margin:24px auto 30px;max-width:620px}.eyebrow{color:#ff7a84;font-size:12px;letter-spacing:2px;font-weight:800}.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.2;margin:10px 0}.hero p{color:var(--muted);line-height:1.9;margin:0}
+
+.card{background:linear-gradient(145deg,#15171d,#0f1014);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 18px 60px #0005}
+
+.auth{max-width:460px;margin:auto}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#090a0d;border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:22px}.tab{padding:11px;border-radius:8px;color:var(--muted);background:transparent}.tab.active{background:#242730;color:white}
+
+.field{display:block;margin:14px 0}.field span{display:block;font-size:13px;color:#c8cbd3;margin-bottom:8px}.field input,.field textarea,.field select{width:100%;border:1px solid #30343e;background:#090a0d;color:white;border-radius:11px;padding:13px 14px;outline:none}.field input:focus,.field textarea:focus{border-color:#e83e50;box-shadow:0 0 0 3px #e83e501c}
+
+.btn{border-radius:11px;padding:13px 16px;font-weight:800;transition:.15s}.primary{background:linear-gradient(120deg,var(--red),var(--red2));color:white;width:100%;box-shadow:0 7px 24px #d91d3630}.primary:hover{filter:brightness(1.08);transform:translateY(-1px)}.secondary{background:#22252d;color:white;border:1px solid #373b46}.linkbtn{background:transparent;color:#ff7b85;padding:10px}.muted{color:var(--muted)}.small{font-size:12px;line-height:1.8}.hidden{display:none!important}
+
+.note{padding:12px 14px;border:1px solid #5d4b23;background:#2a2110;color:#f5d89a;border-radius:12px;font-size:12px;line-height:1.8;margin-top:15px}
+
+.msg{padding:12px 14px;border-radius:11px;margin:12px 0;font-size:13px;line-height:1.7}.msg.error{background:#39171d;border:1px solid #6e2631;color:#ffb6bd}.msg.success{background:#102b22;border:1px solid #205c48;color:#a5f2d2}
+
+.dashhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}.dashhead h2{margin:0}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}.stat{background:#12141a;border:1px solid var(--line);border-radius:15px;padding:17px}.stat .label{color:var(--muted);font-size:12px}.stat .num{font-size:26px;font-weight:900;margin-top:7px;word-break:break-word}.layout{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}.section-title{font-size:16px;margin:0 0 16px}.codebox{border:1px dashed #545a68;background:#090a0d;padding:13px;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;direction:ltr}.code{font-weight:900;letter-spacing:1px;color:#ff8089;overflow-wrap:anywhere}.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.invoice-result{border:1px solid #2b654f;background:#10251e;padding:16px;border-radius:14px;margin-top:16px}.invoice-result h3{margin:0 0 8px}.product-content{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.9}.list{display:grid;gap:9px}.item{background:#0c0d11;border:1px solid #292d36;border-radius:12px;padding:13px}.itemtop{display:flex;justify-content:space-between;gap:8px;align-items:start}.badge{font-size:11px;padding:5px 8px;border-radius:999px;background:#282b34;color:#cdd0d9;white-space:nowrap}.badge.ok{background:#103628;color:#93f1c9}.badge.off{background:#40171d;color:#ffb8bf}.item p{margin:8px 0 0;color:var(--muted);font-size:12px;line-height:1.7}.item-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.item-actions button{font-size:12px;padding:7px 9px;border-radius:8px}
+
+.footer{text-align:center;color:#747a86;font-size:11px;padding:24px 0;border-top:1px solid #ffffff10}
+
+.admin-banner{border:1px solid #7a2633;background:linear-gradient(120deg,#30151b,#171116);padding:14px;border-radius:13px;margin-bottom:16px;color:#ffc3c8;font-size:13px;line-height:1.8}
+
+.notice{padding:14px;border:1px solid v
